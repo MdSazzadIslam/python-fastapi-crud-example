@@ -24,4 +24,5 @@ To build and run this app locally you will need a few things:
 
 
 > git clone https://github.com/MdSazzadIslam/python-fastapi-crud-example.git
+
 > uvicorn main:app --host 0.0.0.0 --port 8000
