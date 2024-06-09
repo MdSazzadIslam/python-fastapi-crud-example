@@ -1,0 +1,6 @@
+__pycache__/
+postgres/
+.env/
+.vscode/
+test*
+.env
