@@ -8,8 +8,8 @@ from src.schemas.product_schema import (
 )
 
 
-async def get_all(db: Session):
-    return db.query(Product).all()
+async def get_all(db: Session, skip: int, limit: int):
+    return db.query(Product).offset(skip).limit(limit).all()
 
 
 async def get_by_id(product_id: UUID, db: Session):

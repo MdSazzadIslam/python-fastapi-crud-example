@@ -1,5 +1,6 @@
-from typing import List
+from fastapi import Query
 from fastapi import APIRouter, Depends, Request, status
+from typing import List
 from sqlalchemy.orm import Session
 from src.config.db import get_db
 from src.schemas.product_schema import (
@@ -20,8 +21,13 @@ router = APIRouter(tags=["products"])
 
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[ProductSchema])
-async def get_products(request: Request, db: Session = Depends(get_db)):
-    return await get_all_products(request.app.state.redis, db)
+async def get_products(
+    request: Request,
+    page: int = Query(1, gt=0),
+    page_size: int = Query(10, gt=0),
+    db: Session = Depends(get_db),
+):
+    return await get_all_products(request.app.state.redis, db, page, page_size)
 
 
 @router.get(

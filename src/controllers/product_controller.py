@@ -14,7 +14,7 @@ from src.crud.product_crud import (
 from src.utils.cache import get_cache, set_cache
 
 
-async def get_all_products(redis: Redis, db: Session):
+async def get_all_products(redis: Redis, db: Session, page: int, page_size: int):
     cache_key = "all_products"
 
     # Check cache first
@@ -22,7 +22,10 @@ async def get_all_products(redis: Redis, db: Session):
     if cached_value:
         return [ProductSchema.parse_obj(product) for product in cached_value]
 
-    products = await get_all(db)
+    skip = (page - 1) * page_size
+    limit = page_size
+
+    products = await get_all(db, skip, limit)
     if not products:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="No products found"
